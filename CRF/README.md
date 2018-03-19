@@ -6,8 +6,7 @@
 ## Compiling:
 Please edit the Makefile appropriately, and specify the directories of Boost and Gurobi.
 
-The code uses C++ 2014 and needs at least G++-4.9. However, Gurobi officially only supports G++-4.8. But apparently it works with G++-4.9 as well but not with G++-5
-Therefore, G++-4.9 is the only supported compiler!
+The code uses C++ 2014 and needs at least G++-4.9. However, Gurobi officially only supports G++-4.8. But apparently it works with G++-4.9 as well but not with G++-5. Therefore, G++-4.9 is the only supported compiler!
 
 You have two compiling options:
 
