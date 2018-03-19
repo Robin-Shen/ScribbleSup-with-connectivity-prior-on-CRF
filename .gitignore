@@ -1,38 +1,19 @@
-# Prerequisites
-*.d
-
 # Compiled Object files
-*.slo
-*.lo
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
 # Executables
-*.exe
 *.out
-*.app
 main_auto
 main_manual
 
 # Output files
 *_output.txt
 *.lp
+*_seg0.png
+*_seg1.png
+*_seg2.png
+*_seg3.png
+*_seg4.png
+*_seg5.png
+*_sup.png
+*_brush.png
