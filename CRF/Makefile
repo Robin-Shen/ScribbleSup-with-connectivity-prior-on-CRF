@@ -16,10 +16,10 @@ manual: main_1_manual.o image.o callback.o
 auto: main_1_auto.o image.o callback.o
 	$(CPP) $(CARGS) -L$(STANDARD) -L$(GUROBI)/lib main_1_auto.o image.o callback.o $(CPPLIB) -o main_auto
 
-main_1_manual.o: main_1.cpp graph.h image.h callback.h
+main_1_manual.o: main_1_manual.cpp graph.h image.h callback.h
 	$(CPP) $(CARGS) -I$(BOOST) -I$(GUROBI)/include -c main_1_manual.cpp
 	
-main_1_auto.o: main_1_no.cpp graph.h image.h callback.h
+main_1_auto.o: main_1_auto.cpp graph.h image.h callback.h
 	$(CPP) $(CARGS) -I$(BOOST) -I$(GUROBI)/include -c main_1_auto.cpp
 
 image.o: image.cpp graph.h image.h
