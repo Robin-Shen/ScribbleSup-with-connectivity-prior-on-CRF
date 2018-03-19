@@ -1,3 +1,9 @@
+# An ILP Solver for Multi-label MRFS with Connectivity Constraints
+This code provides an implementation of the paper above (Shen, Ruobing, et al. "An ILP Solver for Multi-label MRFS with Connectivity Constraints." arXiv preprint arXiv:1712.06020 (2017), https://arxiv.org/pdf/1712.06020.pdf). Originally coded by Ruobing Shen and modified by Nicholas Bade.
+
+The code does not only solve an ILP with Connectivity Constraints but has several models included (see below). Connectivity can be enforced for arbitrary labels. The coloring of the labels is adapted to fit to the Pascal VOC 2012 dataset. There is also an automated version which can be used together with a bash script to run over several images. A logfile and the output images will be saved automatically.
+
+
 ## Dependencies:
 1) Gurobi (http://www.gurobi.com/)
 2) Boost (http://www.boost.org/)
