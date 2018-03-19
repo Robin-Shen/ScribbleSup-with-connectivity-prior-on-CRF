@@ -21,7 +21,7 @@ Usage: ./main_manual image.jpg superpixel_file scribble_file brushwidth timelimi
 If you choose to manually select scribbles, you can use the left mouse button to enforce connectivity. Use the right mouse button if you do not want to enforce connectivity (e.g. background label). You can use scribble_option "2" to load from scribbles from file AND additionally draw new scribbles.
 
 
-Use "make auto" for a more automated version. There is no check whether the call of main is correct. There is no output to the terminal. This might be a proper option if you need to run several images. The easiest way to do so is to use a bashscript. There is an example included (see below).
+Use "make auto" for a more automated version. There is no check whether the call of main is correct. There is no output to the terminal. This might be a proper option if you need to run several images. The easiest way to do so is to use a bash script. There is an example included (see below).
 Usage: ./main_auto image.jpg superpixel.csv scribble.txt brushwidth timelimit lambda
 
 ## Superpixel requirements:
@@ -30,8 +30,8 @@ https://github.com/davidstutz/superpixel-benchmark
 The superpixel csv file gives the superpixel ID for every pixel starting at 0.
 
 ## Typical options:
-Brushwidth between "1" and "3". Lambda: "0.2" Timelimit: "10"s.
-One superpixel must only have one scribble/label on it. Otherwise the l0 heuristic will fail with a segfault. Occasionally, the l0 heuristic fails to converge or produces some arbitrary segfaults. Retry with reduced brushwidth. There is no check whether the provided input files exist. If they don't, the programm will fail silently.
+Brushwidth between "1" and "3". Lambda: "0.2" Time limit: "10"s.
+One superpixel must only have one scribble/label on it. Otherwise the l0 heuristic will fail with a segfault. Occasionally, the l0 heuristic fails to converge or produces some arbitrary segfaults. Retry with reduced brushwidth. There is no check whether the provided input files exist. If they don't, the program will fail silently.
 
 ## Models available:
 You have to define the models to run in the main files! You have the following options.
@@ -43,4 +43,4 @@ You have to define the models to run in the main files! You have the following o
 The l0-heuristic will always be called at first.
 
 ## Example:
-There are some example images, superpixel segs and scribbles from the Pascal VOC set in the example subfolder. To run them automatically, "make auto", "chmod +x example.sh" and then execute the script "./example.s".
+There are some example images, superpixel seg's and scribbles from the Pascal VOC set in the example sub folder. To run them automatically, "make auto", "chmod +x example.sh" and then execute the script "./example.sh".
