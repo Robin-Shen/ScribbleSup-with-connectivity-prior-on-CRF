@@ -1,5 +1,5 @@
-GUROBI   = /path/to/gurobi/gurobi752/linux64
-BOOST    = /path/to/boost/boost_1_66_0
+GUROBI   = /home/nicholas/gurobi/gurobi752/linux64
+BOOST    = /home/nicholas/boost/boost_1_66_0
 
 #STANDARD = /usr/lib/x86_64-linux-gnu/
 STANDARD = /usr/local/include

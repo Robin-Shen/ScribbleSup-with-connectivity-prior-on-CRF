@@ -49,20 +49,18 @@ void loadScribbles(std::string scribble_file) {
     ifstream scribble_csv;
     scribble_csv.open(scribble_file);
     std::string row_csv;
-
     while (std::getline(scribble_csv,row_csv)) {
         //cout << row_csv << endl;
         std::stringstream element_csv(row_csv);
         std:string cell;
-
         seeds.emplace_back();
-        nclick++;
         int i = 0, label,x,y;
         while (std::getline(element_csv, cell,',')) {
             if (i==0) {
                 // We record the label
-                labels.push_back(std::stoi(cell));
                 label = std::stoi(cell);
+                labels.push_back(label);
+                nclick++;
                 // and enforce connectivity if it is not background
                 if (std::stoi(cell) == 0) {
                     unconnected.push_back(1);

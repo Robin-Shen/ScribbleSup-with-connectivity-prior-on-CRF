@@ -49,20 +49,18 @@ void loadScribbles(std::string scribble_file) {
     ifstream scribble_csv;
     scribble_csv.open(scribble_file);
     std::string row_csv;
-
     while (std::getline(scribble_csv,row_csv)) {
         //cout << row_csv << endl;
         std::stringstream element_csv(row_csv);
         std:string cell;
-
         seeds.emplace_back();
-        nclick++;
         int i = 0, label,x,y;
         while (std::getline(element_csv, cell,',')) {
             if (i==0) {
                 // We record the label
-                labels.push_back(std::stoi(cell));
                 label = std::stoi(cell);
+                labels.push_back(label);
+                nclick++;
                 // and enforce connectivity if it is not background
                 if (std::stoi(cell) == 0) {
                     unconnected.push_back(1);
@@ -144,6 +142,8 @@ void onMouse(int event, int x, int y, int flag, void*) {
         unconnected.push_back(0);
         trigger = true;
         nclick++;
+        // We record the label
+        labels.push_back(nclick);
         //cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
     }
     
@@ -166,22 +166,48 @@ void onMouse(int event, int x, int y, int flag, void*) {
 
     if (event == EVENT_MOUSEMOVE) {
         if (trigger) {
-            if (nclick == 1)
+            if (nclick == 1) // OpenCV uses BGR not RGB!
                 line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 0, 0), 2*brushwidth, CV_AA, 0);
             if (nclick == 2)
-                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(255, 0, 0), 2*brushwidth, CV_AA, 0);
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 0, 128), 2*brushwidth, CV_AA, 0);
             if (nclick == 3)
-                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 255, 0), 2*brushwidth, CV_AA, 0);
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 128, 0), 2*brushwidth, CV_AA, 0);
             if (nclick == 4)
-                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 0, 255), 2*brushwidth, CV_AA, 0);
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 128, 128), 2*brushwidth, CV_AA, 0);
             if (nclick == 5)
-                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 255, 255), 2*brushwidth, CV_AA, 0);
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 0, 0), 2*brushwidth, CV_AA, 0);
             if (nclick == 6)
-                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(255, 0, 255), 2*brushwidth, CV_AA, 0);
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 0, 128), 2*brushwidth, CV_AA, 0);
             if (nclick == 7)
-                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(255, 255, 0), 2*brushwidth, CV_AA, 0);
-            if (nclick > 7)
-                   line(img, cvPoint(x, y), cvPoint(x, y), Scalar(122, 122, 122), 2*brushwidth, CV_AA, 0); 
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 128, 0), 2*brushwidth, CV_AA, 0);
+            if (nclick == 8)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 128, 128), 2*brushwidth, CV_AA, 0);
+            if (nclick == 9)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 0, 64), 2*brushwidth, CV_AA, 0);
+            if (nclick == 10)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 0, 192), 2*brushwidth, CV_AA, 0);
+            if (nclick == 11)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 128, 64), 2*brushwidth, CV_AA, 0);
+            if (nclick == 12)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 128, 192), 2*brushwidth, CV_AA, 0);
+            if (nclick == 13)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 0, 64), 2*brushwidth, CV_AA, 0);
+            if (nclick == 14)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 0, 192), 2*brushwidth, CV_AA, 0);
+            if (nclick == 15)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 128, 64), 2*brushwidth, CV_AA, 0);
+            if (nclick == 16)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 128, 192), 2*brushwidth, CV_AA, 0);
+            if (nclick == 17)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 64, 0), 2*brushwidth, CV_AA, 0);
+            if (nclick == 18)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 64, 128), 2*brushwidth, CV_AA, 0);
+            if (nclick == 19)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 192, 0), 2*brushwidth, CV_AA, 0);
+            if (nclick == 20)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(0, 192, 128), 2*brushwidth, CV_AA, 0);
+            if (nclick == 21)
+                line(img, cvPoint(x, y), cvPoint(x, y), Scalar(128, 64, 0), 2*brushwidth, CV_AA, 0);
 
             for (int i= -brushwidth; i < brushwidth; i++) {
                 for (int j = -brushwidth; j < brushwidth; j++) {

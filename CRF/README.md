@@ -18,7 +18,7 @@ You have two compiling options:
 
 You can either use "make manual" to compile a more manual version of the code. This has the option to manually draw scribbles instead of loading them from file, also output is shown in the terminal as well.
 Usage: ./main_manual image.jpg superpixel_file scribble_file brushwidth timelimit lambda scribble_option scribble_file(optional)
-If you choose to manually select scribbles, you can use the left mouse button to enforce connectivity. Use the right mouse button if you do not want to enforce connectivity (e.g. background label). You can use scribble_option "2" to load from scribbles from file AND additionally draw new scribbles.
+If you choose to manually select scribbles, you can use the left mouse button to enforce connectivity. Use the right mouse button if you do not want to enforce connectivity (e.g. background label). You can use scribble_option "2" to load from scribbles from file AND additionally draw new scribbles. This last feature however is experimental. When scribbles are loaded the color is assigned to fit to the color map of the PascalVOC2012 dataset. When then additionally marking scribbles, colors might overlap and do not represent the class associated with anymore.
 
 
 Use "make auto" for a more automated version. There is no check whether the call of main is correct. There is no output to the terminal. This might be a proper option if you need to run several images. The easiest way to do so is to use a bash script. There is an example included (see below).
