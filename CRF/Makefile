@@ -1,5 +1,5 @@
-GUROBI   = /path/to/gurobi/gurobi752/linux64
-BOOST    = /path/to/boost/boost_1_66_0
+GUROBI   = /home/nicholas/gurobi/gurobi752/linux64
+BOOST    = /home/nicholas/boost/boost_1_66_0
 
 #STANDARD = /usr/lib/x86_64-linux-gnu/
 STANDARD = /usr/local/include
@@ -16,6 +16,13 @@ manual: main_1_manual.o image.o callback.o
 auto: main_1_auto.o image.o callback.o
 	$(CPP) $(CARGS) -L$(STANDARD) -L$(GUROBI)/lib main_1_auto.o image.o callback.o $(CPPLIB) -o main_auto
 
+auto_prob: main_2_auto.o image.o callback.o
+	$(CPP) $(CARGS) -L$(STANDARD) -L$(GUROBI)/lib main_2_auto.o image.o callback.o $(CPPLIB) -o main_auto_prob
+	
+main_2_auto.o: main_2_auto.cpp graph.h image.h callback.h
+	$(CPP) $(CARGS) -I$(BOOST) -I$(GUROBI)/include -c main_2_auto.cpp
+
+	
 main_1_manual.o: main_1_manual.cpp graph.h image.h callback.h
 	$(CPP) $(CARGS) -I$(BOOST) -I$(GUROBI)/include -c main_1_manual.cpp
 	

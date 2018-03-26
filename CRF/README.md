@@ -24,6 +24,9 @@ If you choose to manually select scribbles, you can use the left mouse button to
 Use "make auto" for a more automated version. There is no check whether the call of main is correct. There is no output to the terminal. This might be a proper option if you need to run several images. The easiest way to do so is to use a bash script. There is an example included (see below).
 Usage: ./main_auto image.jpg superpixel.csv scribble.txt brushwidth timelimit lambda
 
+Also you can use "make auto_prob". This will build an automated version like above but which loads probaility maps and uses them as unary term. As above no input checks.
+Usage: ./main_auto_prob image.jog superpixel.csv scribble.txt prob_map.csv brushwdith timelimit lamda
+
 ## Superpixel requirements:
 A superpixel file can be generated using e.g.:
 https://github.com/davidstutz/superpixel-benchmark

@@ -4,6 +4,7 @@
 # Executables
 *.out
 main_auto
+main_auto_prob
 main_manual
 
 # Output files

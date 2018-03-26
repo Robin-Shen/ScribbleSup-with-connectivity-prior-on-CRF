@@ -1,14 +1,14 @@
 /*
 Mainfile of oneshot with suppressed output! Can be easily called several times with a simple bash script.
 
-Version1: Uses AVGCOLOR and no probability map as unary term.
+Version 2: Uses probability map as unary term!
 
 Naming: main_x_y.cpp
 x: 1 for using average color, 2: for loading probability map from file
 y: auto, for surpressed output and always with scribble file
 y: manual, for output and with the possibility to draw scribbles
 
-Usage: ./main_auto image.jpg superpixel.csv scribble.txt brushwidth timelimit lambda
+Usage: ./main_auto image.jpg superpixel.csv scribble.txt prob_map.csv brushwidth timelimit lambda
 
 Specify models to run below in the main function (line 446).
 */
@@ -28,6 +28,7 @@ Specify models to run below in the main function (line 446).
 #include <cmath>
 #include <algorithm> 
 #include <array>
+#include <boost/multi_array.hpp>
 
 using namespace std;
 using namespace cv;
@@ -39,10 +40,43 @@ int brushwidth;
 int nclick = 0;
 std::vector<bool> unconnected;
 std::vector<int> labels;
+typedef boost::multi_array<double, 3> array_type3;
+typedef boost::multi_array<double, 2> array_type2;
 
 //std::vector<std::pair<uint32_t, uint32_t>> master_pixels;
 
 std::string itos(int i) {std::stringstream s; s << i; return s.str(); }
+
+// Function to load probability maps from a csv file provided as input
+void loadProb(std::string prob_map, array_type2 unary_prob) {
+    ifstream probmap_csv;
+    probmap_csv.open(prob_map);
+    std::string row_csv;
+    int superpix = 0;
+
+    // Loop over each row in the csv
+    while (std::getline(probmap_csv,row_csv)) {
+        //cout << row_csv << endl;
+        std::stringstream element_csv(row_csv);
+        std:string cell;
+
+        int i = 0;
+        // Loop over each element in a row
+        while (std::getline(element_csv, cell,',')) {
+            if (i==0) {
+                superpix = std::stoi(cell); // We record the superpixel (and start with 0 here!)  
+            }
+            else {
+                auto label_pos = std::find(labels.begin(), labels.end(), i-1);
+                if ( label_pos != labels.end() ) { // If we have this prob. in our scribble we save it
+                    int label_position = std::distance(labels.begin(), label_pos);
+                    unary_prob[superpix][label_position] = std::stod(cell);
+                }
+            }
+            i++;
+        }
+    }
+}
 
 // Function to load scribbles from a csv file provided as input
 void loadScribbles(std::string scribble_file) {
@@ -144,7 +178,9 @@ void master_problem(
   double lambda,
   ofstream& ofp,
   std::vector<int> models,
-  int nmodels) {
+  int nmodels,
+  array_type2 unary_prob
+  ) {
     int l=0;
 
     std::vector<GRBEnv> envs(nmodels);
@@ -162,18 +198,9 @@ void master_problem(
         model[l].set(GRB_IntParam_LazyConstraints, 1);
     }
       //model[2].set(GRB_IntParam_Method, 1);
-    
-    double avgcolor[numseg];
-    for (int i=0; i<numseg; i++) {
-	    avgcolor[i] =0;
-        for(int j=0; j < root_nodes[i].size(); j++) {
-	        avgcolor[i] += rag[(Graph::vertex_descriptor)root_nodes[i][j]].color;
-        }
-	    avgcolor[i] = avgcolor[i]/double(root_nodes[i].size());
-	}
 
     std::vector <GRBLinExpr> objective(nmodels);
-    
+
     //add RAG node as variables, multiply by pixel size
     for (l=0; l<nmodels; l++) {
         objective[l] = 0.0;
@@ -186,7 +213,7 @@ void master_problem(
     	            rag[(Graph::vertex_descriptor)i].var[l].push_back(model[l].addVar(0.0, 1.0, 0.0, GRB_BINARY, "x^"+itos(l)+"_"+itos(i)+"_"+itos(j)));
 	            }
 	            // to account also the superpixel size
-	            objective[l] += rag[(Graph::vertex_descriptor)i].pixels.size() * (1 - lambda) * std::abs(rag[(Graph::vertex_descriptor)i].color - avgcolor[j])*rag[(Graph::vertex_descriptor)i].var[l][j];
+	            objective[l] += rag[(Graph::vertex_descriptor)i].pixels.size() * (1 - lambda) * std::abs(rag[(Graph::vertex_descriptor)i].color - unary_prob[i][j])*rag[(Graph::vertex_descriptor)i].var[l][j];
 	        } 
         }   
     }
@@ -371,9 +398,9 @@ int main(int argc, char** argv) {
     //Image image("swan.png", "swan.csv");
     Image image(argv[1], argv[2]);
 
-    brushwidth = atoi(argv[4]);
-    double tlimit = atof(argv[5]);
-    double lambda = atof(argv[6]);
+    brushwidth = atoi(argv[5]);
+    double tlimit = atof(argv[6]);
+    double lambda = atof(argv[7]);
 
     destroyAllWindows();
     string out_file = argv[1];
@@ -383,7 +410,13 @@ int main(int argc, char** argv) {
     img = imread(out_file);
     namedWindow("nregion");
 
+    // We load the scribbles
     loadScribbles(argv[3]);
+    
+    // We load the unary terms from file
+    int numsuperpix = image.return_superpixelcount();
+    array_type2 unary_prob_superpixel(boost::extents[numsuperpix][labels.size()]);
+    loadProb(argv[4], unary_prob_superpixel);
 
     out_file = argv[1];
     out_file.erase(out_file.end() - 4, out_file.end());
@@ -469,7 +502,7 @@ int main(int argc, char** argv) {
     std::vector<std::vector<std::vector<Graph::vertex_descriptor>>> final_segments(nmodels);
 
     // gurobi model and solve
-    master_problem(rag, master_nodes.size(),master_nodes, segments, final_segments, tlimit, lambda, ofp, models, nmodels);
+    master_problem(rag, master_nodes.size(),master_nodes, segments, final_segments, tlimit, lambda, ofp, models, nmodels, unary_prob_superpixel);
 
     // Now save and display all solutions:
     for (auto l: models) {
