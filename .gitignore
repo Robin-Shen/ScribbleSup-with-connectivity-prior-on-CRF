@@ -17,5 +17,7 @@ main_manual
 *_seg5.png
 *_sup.png
 *_brush.png
+*.log
 
 Makefile
+makefile
