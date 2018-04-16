@@ -1,0 +1,1 @@
+Prediction output as 8 bit png

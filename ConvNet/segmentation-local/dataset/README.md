@@ -1,0 +1,1 @@
+The .txt files here assign files as test, training or validation
