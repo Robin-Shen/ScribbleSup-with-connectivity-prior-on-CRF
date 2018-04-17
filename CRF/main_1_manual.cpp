@@ -10,7 +10,7 @@ y: manual, for output and with the possibility to draw scribbles
 
 Usage: ./main_manual image.jpg superpixel.csv  brushwidth timelimit lambda sribble_option scribble_file (optional)
 
-Specify models to run below in the main function (line 533).
+Specify models to run below in the main function (line 582).
 */
 
 #include "graph.h"
